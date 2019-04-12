@@ -6,33 +6,45 @@ typedef vector<bool> blist;
 
 class gate
 {
-    public:
-    virtual blist calu(blist par)=0;
+protected:
+    unsigned int inputNum;
+    unsigned int outputNum=1;
+public:
+    virtual blist realCalu(blist par)=0;
+    gate(unsigned int inputNum, unsigned int outputNum=1) : inputNum(inputNum), outputNum(outputNum) {}
+    unsigned int getInputNum() { return inputNum; }
+    unsigned int getOutputNum() { return outputNum; }
+
+    blist calu(blist par)
+    {
+        if(this->inputNum!=par.size())
+            throw string("The number of parameters does not match");
+        else
+            return realCalu(par);
+    }
 };
 
 class andGate : public gate
 {
-    public:
-    virtual blist calu(blist par)
+public:
+    andGate() : gate(2) {}
+
+    virtual blist realCalu(blist par)
     {
         blist result;
-        bool r=true;
-        for(unsigned int i=0;i<par.size();i++)
-            r=r&&par[i];
-        result.push_back(r);
+        result.push_back(par[0]&&par[1]);
         return result;
     }
 };
 
 class orGate : public gate
 {
-    public:
-    virtual blist calu(blist par)
+public:
+    orGate() : gate(2) {}
+
+    virtual blist realCalu(blist par)
     {
         blist result;
-        bool r=false;
-        for(unsigned int i=0;i<par.size();i++)
-            r=r||par[i];
         result.push_back(par[0]||par[1]);
         return result;
     }
@@ -40,19 +52,22 @@ class orGate : public gate
 
 class notGate : public gate
 {
-    public:
-    virtual blist calu(blist par)
+public:
+    notGate() : gate(1) {}
+
+    virtual blist realCalu(blist par)
     {
-        for(unsigned int i=0;i<par.size();i++)
-            par[i]=!par[i];
+        par[0]=!par[0];
         return par;
     }
 };
 
 class NAGate : public gate
 {
-    public:
-    virtual blist calu(blist par)
+public:
+    NAGate() : gate(2) {}
+
+    virtual blist realCalu(blist par)
     {
         andGate g1;
         notGate g2;
@@ -63,8 +78,10 @@ class NAGate : public gate
 
 class NOGate : public gate
 {
-    public:
-    virtual blist calu(blist par)
+public:
+    NOGate() : gate(2) {}
+
+    virtual blist realCalu(blist par)
     {
         orGate g1;
         notGate g2;
@@ -75,8 +92,10 @@ class NOGate : public gate
 
 class NOAGate : public gate
 {
-    public:
-    virtual blist calu(blist par)
+public:
+    NOAGate() : gate(4) {}
+
+    virtual blist realCalu(blist par)
     {
         andGate a1;
         andGate a2;
@@ -105,8 +124,10 @@ class NOAGate : public gate
 
 class XorGate : public gate
 {
-    public:
-    virtual blist calu(blist par)
+public:
+    XorGate() : gate(2) {}
+
+    virtual blist realCalu(blist par)
     {
         blist result;
         if(par[0]==par[1])
@@ -119,11 +140,11 @@ class XorGate : public gate
 
 class RSTri : public gate
 {
-    private:
+private:
     blist sta;
 
-    public:
-    RSTri()
+public:
+    RSTri() : gate(2,2)
     {
         sta.push_back(0);
         sta.push_back(1);
@@ -141,7 +162,7 @@ class RSTri : public gate
     const unsigned int Q=0;
     const unsigned int Q2=1;
 
-    virtual blist calu(blist par) //第一个是r第二个是s。返回值也是对应，第一个Q2第二个Q
+    virtual blist realCalu(blist par) //第一个是r第二个是s。返回值也是对应，第一个Q2第二个Q
     {
 
         if(par[R]==0&&par[S]==0) {} //结果不确定
@@ -159,10 +180,11 @@ class RSTri : public gate
 
 class RSCTri : public gate
 {
-    private:
+private:
     RSTri rstg;
 
-    public:
+public:
+    RSCTri() : gate(3,2) {}
     void setQ(bool q) { rstg.setQ(q); }
     bool getQ() { return rstg.getQ(); }
 
@@ -170,7 +192,7 @@ class RSCTri : public gate
     const unsigned int S=1;
     const unsigned int CP=2;
 
-    virtual blist calu(blist par)
+    virtual blist realCalu(blist par)
     {
         blist r;
         if(par[CP]==1)
@@ -190,16 +212,19 @@ class RSCTri : public gate
 
 class DTri : public gate
 {
-    private:
+private:
     blist sta;
 
-    public:
-    DTri() { sta.push_back(0); } //有初值
+public:
+    DTri() : gate(2)
+    {
+        sta.push_back(0);
+    }
 
     const unsigned int D=0;
     const unsigned int CP=1;
 
-    virtual blist calu(blist par)
+    virtual blist realCalu(blist par)
     {
         if(par[CP]==1)
             sta[D]=par[D];
@@ -209,11 +234,11 @@ class DTri : public gate
 
 class JKTri : public gate
 {
-    private:
+private:
     blist sta;
 
-    public:
-    JKTri()
+public:
+    JKTri() : gate(3,2)
     {
         sta.push_back(0);
         sta.push_back(1);
@@ -232,7 +257,7 @@ class JKTri : public gate
     const unsigned int Q=0;
     const unsigned int Q2=1;
 
-    virtual blist calu(blist par)
+    virtual blist realCalu(blist par)
     {
         if(par[CP]==1)
         {

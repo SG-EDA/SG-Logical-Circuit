@@ -36,4 +36,5 @@ int main()
         par=rstg.calu(par);
         cout<<"cp"<<cp<<" q"<<q<<" r"<<r<<" s"<<s<<" result"<<par[0]<<endl;
     }
+    getchar();
 }
