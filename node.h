@@ -4,9 +4,8 @@
 class node
 {
     public:
-    vector<node*> allpar; //每个node的求值结果是blist，里面可能有一个或多个变量
+    vector<node*> outputNode; //与g的output个数相等。每个连接需指明插槽位
     gate *g;
-    unsigned int sub=-1;
 
     ~node()
     {
@@ -15,8 +14,8 @@ class node
             delete allpar[i];
     }
 
-    blist calu()
+    blist calu(blist input)
     {
-
+        blist result=g->calu(input);
     }
 }
