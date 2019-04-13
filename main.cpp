@@ -1,40 +1,81 @@
 #include <iostream>
-#include "gate.h"
+#include "node.h"
+
+list<node*> nodeManager::allNode;
+vector<line*> nodeManager::allInput;
+vector<line*> nodeManager::allOutput;
 
 int main()
 {
-    for(int q=0;q<=1;q++)
-    for(int r=0;r<=1;r++)
-    for(int s=0;s<=1;s++)
-    {
-        RSTri rstg;
-        rstg.setQ(q);
+    line A=line();
+    line B=line();
+    line C=line();
+    line D=line();
 
-        blist par;
-        par.push_back(r);
-        par.push_back(s);
+    nodeManager::addInputLine(&A);
+    nodeManager::addInputLine(&B);
+    nodeManager::addInputLine(&C);
+    nodeManager::addInputLine(&D);
 
-        par=rstg.calu(par);
-        cout<<"q"<<q<<" r"<<r<<" s"<<s<<" result"<<par[0]<<endl;
-    }
+    node nn1(new notGate());
+    nn1.addInputLine(&A);
+    node nn2(new notGate());
+    nn2.addInputLine(&B);
+    node nn3(new notGate());
+    nn3.addInputLine(&C);
+    node nn4(new notGate());
+    nn4.addInputLine(&D);
 
-    cout<<"next"<<endl;
+    line NA=line(&nn1);
+    line NB=line(&nn2);
+    line NC=line(&nn3);
+    line ND=line(&nn4);
 
-    for(int cp=0;cp<=1;cp++)
-    for(int q=0;q<=1;q++)
-    for(int r=0;r<=1;r++)
-    for(int s=0;s<=1;s++)
-    {
-        RSCTri rstg;
-        rstg.setQ(q);
+    node n1(new andGate());
+    n1.addInputLine(&NB);
+    n1.addInputLine(&NC);
+    line NBNC=line(&n1);
+    node n2(new andGate());
+    n2.addInputLine(&NBNC);
+    n2.addInputLine(&ND);
+    line NBNCND=line(&n2);
 
-        blist par;
-        par.push_back(r);
-        par.push_back(s);
-        par.push_back(cp);
+    node n3(new andGate());
+    n3.addInputLine(&B);
+    n3.addInputLine(&D);
+    line BD=line(&n3);
 
-        par=rstg.calu(par);
-        cout<<"cp"<<cp<<" q"<<q<<" r"<<r<<" s"<<s<<" result"<<par[0]<<endl;
-    }
-    getchar();
+    node n4(new orGate());
+    n4.addInputLine(&NBNCND);
+    n4.addInputLine(&BD);
+    line NBNCND_BD=line(&n4);
+
+    node n5(new andGate());
+    n5.addInputLine(&NA);
+    n5.addInputLine(&NBNCND_BD);
+    line i1=line(&n5);
+
+    node n6(new andGate());
+    n6.addInputLine(&A);
+    n6.addInputLine(&NB);
+    line i2=line(&n6);
+
+    node n7(new andGate());
+    n7.addInputLine(&C);
+    n7.addInputLine(&D);
+    line i3=line(&n7);
+
+    node n8(new orGate());
+    n8.addInputLine(&i1);
+    n8.addInputLine(&i2);
+    line r1=line(&n8);
+
+    node n9(new orGate());
+    n9.addInputLine(&r1);
+    n9.addInputLine(&i3);
+    line r2=line(&n9);
+
+    nodeManager::addOutputNode(&r2);
+    nodeManager::trueTable();
+    nodeManager::gateNum();
 }

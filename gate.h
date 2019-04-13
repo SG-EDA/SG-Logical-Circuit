@@ -1,5 +1,8 @@
 #pragma once
 #include <vector>
+#include <list>
+#include <string>
+#include <iostream>
 using namespace std;
 
 typedef vector<bool> blist;
@@ -7,13 +10,16 @@ typedef vector<bool> blist;
 class gate
 {
 protected:
+    string name;
     unsigned int inputNum;
     unsigned int outputNum=1;
 public:
     virtual blist realCalu(blist par)=0;
-    gate(unsigned int inputNum, unsigned int outputNum=1) : inputNum(inputNum), outputNum(outputNum) {}
+    gate(string name,unsigned int inputNum, unsigned int outputNum=1) :
+        name(name), inputNum(inputNum), outputNum(outputNum) {}
     unsigned int getInputNum() { return inputNum; }
     unsigned int getOutputNum() { return outputNum; }
+    string getName() { return this->name; }
 
     blist calu(blist par)
     {
@@ -24,10 +30,11 @@ public:
     }
 };
 
+
 class andGate : public gate
 {
 public:
-    andGate() : gate(2) {}
+    andGate() : gate("and",2) {}
 
     virtual blist realCalu(blist par)
     {
@@ -37,10 +44,11 @@ public:
     }
 };
 
+
 class orGate : public gate
 {
 public:
-    orGate() : gate(2) {}
+    orGate() : gate("or",2) {}
 
     virtual blist realCalu(blist par)
     {
@@ -50,10 +58,11 @@ public:
     }
 };
 
+
 class notGate : public gate
 {
 public:
-    notGate() : gate(1) {}
+    notGate() : gate("not",1) {}
 
     virtual blist realCalu(blist par)
     {
@@ -62,10 +71,11 @@ public:
     }
 };
 
+
 class NAGate : public gate
 {
 public:
-    NAGate() : gate(2) {}
+    NAGate() : gate("NA",2) {}
 
     virtual blist realCalu(blist par)
     {
@@ -76,10 +86,11 @@ public:
     }
 };
 
+
 class NOGate : public gate
 {
 public:
-    NOGate() : gate(2) {}
+    NOGate() : gate("NO",2) {}
 
     virtual blist realCalu(blist par)
     {
@@ -93,7 +104,7 @@ public:
 class NOAGate : public gate
 {
 public:
-    NOAGate() : gate(4) {}
+    NOAGate() : gate("NOA",4) {}
 
     virtual blist realCalu(blist par)
     {
@@ -125,7 +136,7 @@ public:
 class XorGate : public gate
 {
 public:
-    XorGate() : gate(2) {}
+    XorGate() : gate("Xor",2) {}
 
     virtual blist realCalu(blist par)
     {
@@ -144,7 +155,7 @@ private:
     blist sta;
 
 public:
-    RSTri() : gate(2,2)
+    RSTri() : gate("RS",2,2)
     {
         sta.push_back(0);
         sta.push_back(1);
@@ -184,7 +195,7 @@ private:
     RSTri rstg;
 
 public:
-    RSCTri() : gate(3,2) {}
+    RSCTri() : gate("RSC",3,2) {}
     void setQ(bool q) { rstg.setQ(q); }
     bool getQ() { return rstg.getQ(); }
 
@@ -216,7 +227,7 @@ private:
     blist sta;
 
 public:
-    DTri() : gate(2)
+    DTri() : gate("D",2)
     {
         sta.push_back(0);
     }
@@ -238,7 +249,7 @@ private:
     blist sta;
 
 public:
-    JKTri() : gate(3,2)
+    JKTri() : gate("JK",3,2)
     {
         sta.push_back(0);
         sta.push_back(1);
