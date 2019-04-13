@@ -1,0 +1,24 @@
+input:z1
+input:z2
+input:z3
+input:11
+input:12
+input:13
+input:31
+input:32
+input:33
+
+i1=or 11 31
+i2=or 12 32
+i3=or 13 33
+o1=and i1 z1
+o2=and i2 z2
+o3=and i3 z3
+
+r1=or o1 o2
+r2=or r1 o3
+
+output:r2
+
+stru
+gateNum

@@ -1,0 +1,28 @@
+input:A
+input:B
+input:C
+input:D
+
+NA=not A
+NB=not B
+NC=not C
+ND=not D
+
+NBNC=and NB NC
+NBNCND=and NBNC ND
+
+BD=and B D
+NBNCND_BD=or NBNCND BD
+
+i1=and NA NBNCND_BD
+i2=and A NB
+i3=and C D
+
+r1=or i1 i2
+r2=or r1 i3
+
+output:r2
+
+trueTable
+stru
+gateNum

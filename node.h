@@ -85,6 +85,10 @@ public:
             delete i;
         for(node* i : allNode)
             delete i;
+        allNode.clear();
+        allLine.clear();
+        allInput.clear();
+        allOutput.clear();
     }
 
     static void addNode(node* n) { allNode.push_back(n); }

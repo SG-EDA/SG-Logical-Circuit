@@ -115,7 +115,10 @@ void script::eval(string sen)
         else if(sen=="stru")
             nodeManager::stru();
         else if(sen=="clear")
+        {
             nodeManager::deleteAll();
+            lineMap.clear();
+        }
         else
             throw string("Unknow command");
     }
