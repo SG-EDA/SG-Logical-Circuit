@@ -13,7 +13,7 @@ void script::run(vector<string> com)
 
     string code=help::readTxt(path);
     cout<<code<<endl;
-    cout<<"----- run:"<<path<<" -----"<<endl<<endl;
+    cout<<"----- load:"<<path<<" -----"<<endl<<endl;
     script::evalAll(code);
     cout<<endl<<"-----end-----"<<endl;
 }
@@ -93,7 +93,7 @@ void script::eval(string sen)
             vector<string> com2=help::split(com[1]," ");
             lineMap[com2[0]]->constVal=help::toint(com2[1]);
         }
-        else if(com[0]=="run")
+        else if(com[0]=="load")
         {
             run(com);
         }
@@ -110,10 +110,12 @@ void script::eval(string sen)
             nodeManager::trueTable();
         else if(sen=="gateNum")
             nodeManager::gateNum();
-        else if(sen=="output")
+        else if(sen=="run")
             nodeManager::output();
         else if(sen=="stru")
             nodeManager::stru();
+        else if(sen=="clear")
+            nodeManager::deleteAll();
         else
             throw string("Unknow command");
     }

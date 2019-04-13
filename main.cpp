@@ -8,6 +8,13 @@ int main()
         string input;
         printf(">>");
         getline(cin,input);
-        script::eval(input);
+        try
+        {
+            script::eval(input);
+        }
+        catch(string e)
+        {
+            cout<<e<<endl;
+        }
     }
 }
