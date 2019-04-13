@@ -3,5 +3,11 @@
 
 int main()
 {
-    script::eval("run:D:/test.lc");
+    while(1)
+    {
+        string input;
+        printf(">>");
+        getline(cin,input);
+        script::eval(input);
+    }
 }
