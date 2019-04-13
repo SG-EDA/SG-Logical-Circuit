@@ -31,8 +31,8 @@ load:D:/test.lc
 
 ### Command
 
-* **trueTable:**Running circuit with enumerating all inputs
-* **gateNum:**Output the number of logic gates in the current circuit
-* **stru:**Output of the current circuit structure (does not look good)
-* **run:**Running Circuit with Current Input
-* **clear:**Clear the current circuit
+* **trueTable:** Running circuit with enumerating all inputs
+* **gateNum:** Output the number of logic gates in the current circuit
+* **stru:** Output of the current circuit structure (does not look good)
+* **run:** Running Circuit with Current Input
+* **clear:** Clear the current circuit
