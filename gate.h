@@ -32,14 +32,6 @@ public:
 };
 
 
-class polGate : public gate
-{
-public:
-    polGate() : gate("--",-1) {}
-    virtual blist realCalu(blist par) { return blist(); }
-};
-
-
 class andGate : public gate
 {
 public:

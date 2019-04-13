@@ -138,10 +138,8 @@ public:
 
     static void stru()
     {
-        node n(new polGate(),false);
         for(line* i : allOutput)
-            n.addInputLine(i);
-        n.stru();
+            i->stru();
     }
 };
 
