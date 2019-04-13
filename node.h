@@ -1,5 +1,6 @@
 #pragma once
 #include "gate.h"
+#include "help.h"
 #include <map>
 
 class node;
@@ -9,15 +10,18 @@ class line
 {
 private:
     node *n;
-    unsigned int sub;
+    uint sub;
     bool isConst=false;
+    string name;
 public:
     bool constVal;
 
-    line(node *n,unsigned int sub=0) : n(n), sub(sub) {}
-    line(bool constVal=0) : isConst(true), constVal(constVal) {}
+    line(node *n,uint sub=0) : n(n), sub(sub) {}
+    line(string name,bool constVal=0) : name(name), isConst(true), constVal(constVal) {}
     bool get();
+    string getName() { return this->name; }
     //~line() { delete this->n; } //node只被管理器析构，node析构同时析构自己的line
+    void stru(uint tabNum=0);
 };
 
 
@@ -28,8 +32,8 @@ private:
     blist getInputPar()
     {
         blist par;
-        for(line* l : inputLine)
-            par.push_back(l->get());
+        for(line* i : inputLine)
+            par.push_back(i->get());
         return par;
     }
 
@@ -47,6 +51,22 @@ public:
         this->result=g->calu(getInputPar());
         this->isEval=true;
         return this->result;
+    }
+
+    void stru(uint tabNum=0)
+    {
+        cout<<g->getName()<<"-";
+        for(uint i=0;i<inputLine.size();i++)
+        {
+            inputLine[i]->stru(tabNum+1);
+            if(i!=inputLine.size()-1)
+            {
+                cout<<endl;
+                help::tab(tabNum+1);
+            }
+        }
+        if(tabNum==0)
+            cout<<endl;
     }
 };
 
@@ -81,7 +101,7 @@ public:
             cout<<i.first<<":"<<i.second<<endl;
     }
 
-    static void trueTable(unsigned int sub = 0)
+    static void trueTable(uint sub = 0)
     {
         allInput[sub]->constVal=false;
 
@@ -101,10 +121,10 @@ public:
     static void output()
     {
         reset();
-        for(unsigned int i=0;i<allInput.size();i++)
-            cout<<"["<<i<<"]"<<allInput[i]->get()<<" ";
+        for(line* i : allInput)
+            cout<<"["<<i->getName()<<"]"<<i->get()<<" ";
         cout<<" -> ";
-        for(unsigned int i=0;i<allOutput.size();i++)
+        for(uint i=0;i<allOutput.size();i++)
             cout<<"["<<i<<"]"<<allOutput[i]->get()<<" ";
         cout<<endl;
     }

@@ -8,4 +8,5 @@ SOURCES += main.cpp \
 
 HEADERS += \
     gate.h \
-    node.h
+    node.h \
+    help.h

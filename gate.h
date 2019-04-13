@@ -6,19 +6,20 @@
 using namespace std;
 
 typedef vector<bool> blist;
+typedef unsigned int uint;
 
 class gate
 {
 protected:
     string name;
-    unsigned int inputNum;
-    unsigned int outputNum=1;
+    uint inputNum;
+    uint outputNum=1;
 public:
     virtual blist realCalu(blist par)=0;
-    gate(string name,unsigned int inputNum, unsigned int outputNum=1) :
+    gate(string name,uint inputNum, uint outputNum=1) :
         name(name), inputNum(inputNum), outputNum(outputNum) {}
-    unsigned int getInputNum() { return inputNum; }
-    unsigned int getOutputNum() { return outputNum; }
+    uint getInputNum() { return inputNum; }
+    uint getOutputNum() { return outputNum; }
     string getName() { return this->name; }
 
     blist calu(blist par)
@@ -167,11 +168,11 @@ public:
     }
     bool getQ() { return sta[Q]; }
 
-    const unsigned int R=0;
-    const unsigned int S=1;
+    const uint R=0;
+    const uint S=1;
 
-    const unsigned int Q=0;
-    const unsigned int Q2=1;
+    const uint Q=0;
+    const uint Q2=1;
 
     virtual blist realCalu(blist par) //第一个是r第二个是s。返回值也是对应，第一个Q2第二个Q
     {
@@ -199,9 +200,9 @@ public:
     void setQ(bool q) { rstg.setQ(q); }
     bool getQ() { return rstg.getQ(); }
 
-    const unsigned int R=0;
-    const unsigned int S=1;
-    const unsigned int CP=2;
+    const uint R=0;
+    const uint S=1;
+    const uint CP=2;
 
     virtual blist realCalu(blist par)
     {
@@ -232,8 +233,8 @@ public:
         sta.push_back(0);
     }
 
-    const unsigned int D=0;
-    const unsigned int CP=1;
+    const uint D=0;
+    const uint CP=1;
 
     virtual blist realCalu(blist par)
     {
@@ -261,12 +262,12 @@ public:
     }
     bool getQ() { return sta[Q]; }
 
-    const unsigned int J=0;
-    const unsigned int K=1;
-    const unsigned int CP=2;
+    const uint J=0;
+    const uint K=1;
+    const uint CP=2;
 
-    const unsigned int Q=0;
-    const unsigned int Q2=1;
+    const uint Q=0;
+    const uint Q2=1;
 
     virtual blist realCalu(blist par)
     {

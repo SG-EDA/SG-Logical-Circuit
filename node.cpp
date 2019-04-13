@@ -12,6 +12,17 @@ bool line::get()
     }
 }
 
+void line::stru(uint tabNum)
+{
+    if(isConst)
+    {
+        cout<<getName();
+        return;
+    }
+    else
+        n->stru(tabNum);
+}
+
 node::node(gate* g) : g(g)
 {
     nodeManager::addNode(this);

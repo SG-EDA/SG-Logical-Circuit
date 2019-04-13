@@ -7,10 +7,10 @@ vector<line*> nodeManager::allOutput;
 
 int main()
 {
-    line A=line();
-    line B=line();
-    line C=line();
-    line D=line();
+    line A=line("A");
+    line B=line("B");
+    line C=line("C");
+    line D=line("D");
 
     nodeManager::addInputLine(&A);
     nodeManager::addInputLine(&B);
@@ -77,5 +77,6 @@ int main()
 
     nodeManager::addOutputNode(&r2);
     nodeManager::trueTable();
+    r2.stru();
     nodeManager::gateNum();
 }
