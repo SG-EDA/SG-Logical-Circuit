@@ -1,5 +1,15 @@
 #include "node.h"
 
+list<node*> nodeManager::allNode;
+vector<line*> nodeManager::allInput;
+vector<line*> nodeManager::allOutput;
+list<line*> nodeManager::allLine;
+
+line::line(node *n,uint sub) : n(n), sub(sub)
+{
+    nodeManager::addLine(this);
+}
+
 bool line::get()
 {
     if(isConst)
@@ -23,14 +33,8 @@ void line::stru(uint tabNum)
         n->stru(tabNum);
 }
 
-node::node(gate* g) : g(g)
+node::node(gate* g, bool count) : g(g)
 {
-    nodeManager::addNode(this);
-}
-
-node::~node()
-{
-    delete g;
-    for(unsigned int i=0;i<inputLine.size();i++)
-        delete inputLine[i];
+    if(count)
+        nodeManager::addNode(this);
 }

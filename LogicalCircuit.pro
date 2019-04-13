@@ -4,9 +4,11 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += main.cpp \
-    node.cpp
+    node.cpp \
+    script.cpp
 
 HEADERS += \
     gate.h \
     node.h \
-    help.h
+    help.h \
+    script.h

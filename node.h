@@ -11,16 +11,15 @@ class line
 private:
     node *n;
     uint sub;
-    bool isConst=false;
     string name;
+    bool isConst=false;
 public:
     bool constVal;
 
-    line(node *n,uint sub=0) : n(n), sub(sub) {}
+    line(node *n,uint sub=0);
     line(string name,bool constVal=0) : name(name), isConst(true), constVal(constVal) {}
     bool get();
     string getName() { return this->name; }
-    //~line() { delete this->n; } //node只被管理器析构，node析构同时析构自己的line
     void stru(uint tabNum=0);
 };
 
@@ -42,8 +41,8 @@ public:
     blist result;
     gate *g;
 
-    node(gate* g);
-    ~node();
+    node(gate* g,bool count=true);
+    ~node() { delete g; }
     void addInputLine(line* l) { inputLine.push_back(l); }
 
     blist eval()
@@ -75,21 +74,23 @@ class nodeManager
 {
 private:
     static list<node*> allNode;
+    static list<line*> allLine;
     static vector<line*> allInput;
     static vector<line*> allOutput;
 
 public:
-    static void deleteAllNode()
+    static void deleteAll()
     {
-        for(line* i : allOutput)
+        for(line* i : allLine)
             delete i;
         for(node* i : allNode)
             delete i;
     }
 
     static void addNode(node* n) { allNode.push_back(n); }
+    static void addLine(line* n) { allLine.push_back(n); }
     static void addInputLine(line* n) { allInput.push_back(n); }
-    static void addOutputNode(line* n) { allOutput.push_back(n); }
+    static void addOutputLine(line* n) { allOutput.push_back(n); }
 
     static void gateNum()
     {
@@ -133,6 +134,14 @@ public:
     {
         for(node* i : allNode)
             i->isEval=false;
+    }
+
+    static void stru()
+    {
+        node n(new polGate(),false);
+        for(line* i : allOutput)
+            n.addInputLine(i);
+        n.stru();
     }
 };
 
