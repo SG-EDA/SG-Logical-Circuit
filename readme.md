@@ -36,3 +36,5 @@ load:D:/test.lc
 * **stru:** Output of the current circuit structure (does not look good)
 * **run:** Running Circuit with Current Input
 * **clear:** Clear the current circuit
+* **middleVar:** Running circuit and output all line values with Current Input
+* **multiplexing:** Statistics of all line usage

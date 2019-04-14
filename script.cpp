@@ -38,8 +38,8 @@ void script::equState(string sen)
         g=new NOGate();
     else if(com2[0]=="NOA")
         g=new NOAGate();
-    else if(com2[0]=="Xor")
-        g=new XorGate();
+    else if(com2[0]=="xor")
+        g=new xorGate();
     else if(com2[0]=="RS")
         g=new RSTri();
     else if(com2[0]=="RSC")
@@ -65,7 +65,7 @@ void script::equState(string sen)
             continue;
         else
         {
-           line* newLine=new line(n,i);
+           line* newLine=new line(com3[i],n,i);
            lineMap[com3[i]]=newLine;
         }
     }
@@ -119,6 +119,10 @@ void script::eval(string sen)
             nodeManager::deleteAll();
             lineMap.clear();
         }
+        else if(sen=="middleVar")
+            nodeManager::middleVar();
+        else if(sen=="multiplexing")
+            nodeManager::multiplexing();
         else
             throw string("Unknow command");
     }

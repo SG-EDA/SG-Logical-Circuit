@@ -134,10 +134,10 @@ public:
     }
 };
 
-class XorGate : public gate
+class xorGate : public gate
 {
 public:
-    XorGate() : gate("Xor",2) {}
+    xorGate() : gate("Xor",2) {}
 
     virtual blist realCalu(blist par)
     {

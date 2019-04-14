@@ -16,7 +16,7 @@ private:
 public:
     bool constVal;
 
-    line(node *n,uint sub=0);
+    line(string name, node *n,uint sub=0);
     line(string name,bool constVal=0) : name(name), isConst(true), constVal(constVal) {}
     bool get();
     string getName() { return this->name; }
@@ -27,7 +27,6 @@ public:
 class node
 {
 private:
-    vector<line*> inputLine; //与g的input个数相等。每个连接需指明插槽位
     blist getInputPar()
     {
         blist par;
@@ -37,6 +36,7 @@ private:
     }
 
 public:
+    vector<line*> inputLine; //与g的input个数相等。每个连接需指明插槽位
     bool isEval=false;
     blist result;
     gate *g;
@@ -144,6 +144,24 @@ public:
     {
         for(line* i : allOutput)
             i->stru();
+    }
+
+    static void middleVar()
+    {
+        for(line* i : allLine)
+            cout<<"["<<i->getName()<<"]"<<i->get()<<endl;
+    }
+
+    static void multiplexing()
+    {
+        map<string,int>result;
+        for(node* i : allNode)
+        {
+            for(line* j : i->inputLine)
+                result[j->getName()]++;
+        }
+        for(auto i : result)
+            cout<<"["<<i.first<<"]"<<i.second<<endl;
     }
 };
 

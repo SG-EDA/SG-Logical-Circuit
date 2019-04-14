@@ -5,7 +5,7 @@ vector<line*> nodeManager::allInput;
 vector<line*> nodeManager::allOutput;
 list<line*> nodeManager::allLine;
 
-line::line(node *n,uint sub) : n(n), sub(sub)
+line::line(string name, node *n, uint sub) : name(name), n(n), sub(sub)
 {
     nodeManager::addLine(this);
 }
