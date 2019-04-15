@@ -164,7 +164,7 @@ public:
         for(auto i : result)
         {
             cout<<"["<<i.first<<"]"<<i.second<<"\t"; 
-            lineNum++;
+            lineNum+=i.second;
         }
         cout<<endl<<"lineNum:"<<lineNum<<endl;
     }
