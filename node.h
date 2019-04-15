@@ -154,6 +154,7 @@ public:
 
     static void multiplexing()
     {
+        uint lineNum=0;
         map<string,int>result;
         for(node* i : allNode)
         {
@@ -161,7 +162,11 @@ public:
                 result[j->getName()]++;
         }
         for(auto i : result)
-            cout<<"["<<i.first<<"]"<<i.second<<endl;
+        {
+            cout<<"["<<i.first<<"]"<<i.second<<"\t"; 
+            lineNum++;
+        }
+        cout<<endl<<"lineNum:"<<lineNum<<endl;
     }
 };
 
