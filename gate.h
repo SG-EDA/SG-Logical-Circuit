@@ -14,6 +14,8 @@ protected:
     string name;
     uint inputNum;
     uint outputNum=1;
+    bool isTri=false;
+
 public:
     virtual blist realCalu(blist par)=0;
     gate(string name,uint inputNum, uint outputNum=1) :
@@ -150,13 +152,22 @@ public:
     }
 };
 
-class RSTri : public gate
+class tri : public gate
 {
-private:
+protected:
     blist sta;
 
 public:
-    RSTri() : gate("RS",2,2)
+    tri(string name,uint inputNum, uint outputNum=1) : gate(name,inputNum,outputNum) { isTri=true; }
+
+    const uint Q=0;
+    bool getQ() { return sta[Q]; }
+};
+
+class RSTri : public tri
+{
+public:
+    RSTri() : tri("RS",2,2)
     {
         sta.push_back(0);
         sta.push_back(1);
@@ -166,12 +177,10 @@ public:
         sta[Q]=q;
         sta[Q2]=!q;
     }
-    bool getQ() { return sta[Q]; }
 
     const uint R=0;
     const uint S=1;
 
-    const uint Q=0;
     const uint Q2=1;
 
     virtual blist realCalu(blist par) //第一个是r第二个是s。返回值也是对应，第一个Q2第二个Q
@@ -196,7 +205,7 @@ private:
     RSTri rstg;
 
 public:
-    RSCTri() : gate("RSC",3,2) {}
+    RSCTri() : gate("RSC",3,2) { isTri=true; }
     void setQ(bool q) { rstg.setQ(q); }
     bool getQ() { return rstg.getQ(); }
 
@@ -222,16 +231,14 @@ public:
     }
 };
 
-class DTri : public gate
+class DTri : public tri
 {
-private:
-    blist sta;
-
 public:
-    DTri() : gate("D",2)
+    DTri() : tri("D",2)
     {
         sta.push_back(0);
     }
+    void setQ(bool q) { sta[Q]=q; }
 
     const uint D=0;
     const uint CP=1;
@@ -244,13 +251,10 @@ public:
     }
 };
 
-class JKTri : public gate
+class JKTri : public tri
 {
-private:
-    blist sta;
-
 public:
-    JKTri() : gate("JK",3,2)
+    JKTri() : tri("JK",3,2)
     {
         sta.push_back(0);
         sta.push_back(1);
@@ -260,13 +264,11 @@ public:
         sta[Q]=q;
         sta[Q2]=!q;
     }
-    bool getQ() { return sta[Q]; }
 
     const uint J=0;
     const uint K=1;
     const uint CP=2;
 
-    const uint Q=0;
     const uint Q2=1;
 
     virtual blist realCalu(blist par)
@@ -290,13 +292,10 @@ public:
     }
 };
 
-class TTri : public gate
+class TTri : public tri
 {
-private:
-    blist sta;
-
 public:
-    JKTri() : gate("T",1,2)
+    TTri() : tri("T",1,2)
     {
         sta.push_back(0);
         sta.push_back(1);
@@ -306,11 +305,10 @@ public:
         sta[Q]=q;
         sta[Q2]=!q;
     }
-    bool getQ() { return sta[Q]; }
 	
 	const uint T=0;
+    const uint CP=1;
 	
-	const uint Q=0;
     const uint Q2=1;
 	
 	virtual blist realCalu(blist par)

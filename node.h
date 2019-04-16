@@ -111,19 +111,19 @@ public:
         allInput[sub]->constVal=false;
 
         if(sub==allInput.size()-1)
-            output();
+            run();
         else
             trueTable(sub+1);
 
         allInput[sub]->constVal=true;
 
         if(sub==allInput.size()-1)
-            output();
+            run();
         else
             trueTable(sub+1);
     }
 
-    static void output()
+    static void run()
     {
         reset();
         for(line* i : allInput)

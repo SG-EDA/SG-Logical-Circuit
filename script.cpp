@@ -2,7 +2,17 @@
 
 map<string,line*> script::lineMap;
 
-void script::run(vector<string> com)
+void script::clear()
+{
+    nodeManager::deleteAll();
+    lineMap.clear();
+    line* trueLine=new line("true",(bool)1);
+    lineMap["true"]=trueLine;
+    line* falseLine=new line("false",(bool)0);
+    lineMap["false"]=falseLine;
+}
+
+void script::runFile(vector<string> com)
 {
     nodeManager::deleteAll();
     string path;
@@ -19,7 +29,7 @@ void script::run(vector<string> com)
 }
 
 
-void script::equState(string sen)
+void script::equExp(string sen)
 {
     vector<string> com=help::split(sen,"=");
     vector<string> com2=help::split(com[1]," ");
@@ -73,6 +83,30 @@ void script::equState(string sen)
     }
 }
 
+void script::colonExp(string sen)
+{
+    vector<string> com=help::split(sen,":");
+
+    if(com[0]=="input")
+    {
+        line* newline=new line(com[1]);
+        lineMap[com[1]]=newline;
+        nodeManager::addInputLine(newline);
+    }
+    else if(com[0]=="output")
+        nodeManager::addOutputLine(lineMap[com[1]]);
+    else if(com[0]=="set")
+    {
+        vector<string> com2=help::split(com[1]," ");
+        lineMap[com2[0]]->constVal=help::toint(com2[1]);
+    }
+    else if(com[0]=="load")
+    {
+        runFile(com);
+    }
+    else
+        throw string("Unexpected line markup");
+}
 
 void script::eval(string sen)
 {
@@ -80,31 +114,11 @@ void script::eval(string sen)
         return;
     if(sen.find(":")!=-1)
     {
-        vector<string> com=help::split(sen,":");
-
-        if(com[0]=="input")
-        {
-            line* newline=new line(com[1]);
-            lineMap[com[1]]=newline;
-            nodeManager::addInputLine(newline);
-        }
-        else if(com[0]=="output")
-            nodeManager::addOutputLine(lineMap[com[1]]);
-        else if(com[0]=="set")
-        {
-            vector<string> com2=help::split(com[1]," ");
-            lineMap[com2[0]]->constVal=help::toint(com2[1]);
-        }
-        else if(com[0]=="load")
-        {
-            run(com);
-        }
-        else
-            throw string("Unexpected line markup");
+        colonExp(sen);
     }
     else if(sen.find("=")!=-1)
     {
-        equState(sen);
+        equExp(sen);
     }
     else
     {
@@ -113,18 +127,11 @@ void script::eval(string sen)
         else if(sen=="gateNum")
             nodeManager::gateNum();
         else if(sen=="run")
-            nodeManager::output();
+            nodeManager::run();
         else if(sen=="stru")
             nodeManager::stru();
         else if(sen=="clear")
-        {
-            nodeManager::deleteAll();
-            lineMap.clear();
-            line* trueLine=new line("true",(bool)1);
-            lineMap["true"]=trueLine;
-            line* falseLine=new line("false",(bool)0);
-            lineMap["false"]=falseLine;
-        }
+            script::clear();
         else if(sen=="middleVar")
             nodeManager::middleVar();
         else if(sen=="multiplexing")

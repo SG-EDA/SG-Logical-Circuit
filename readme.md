@@ -3,7 +3,7 @@ Logical Circuit
 
 Documents
 -------------
-### : Expression
+### Colon Expression
 
 #### input
 Setting the input line of the circuit (automatically defining a line variable)

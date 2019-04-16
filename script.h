@@ -4,10 +4,13 @@
 class script
 {
 private:
-    static void run(vector<string> com);
-    static void equState(string sen);
+    static void runFile(vector<string> com);
+    static void equExp(string sen);
+    static void colonExp(string sen);
+
 public:
     static map<string,line*> lineMap; //没有所有权
+    static void clear();
     static void eval(string sen);
     static void evalAll(string code)
     {
