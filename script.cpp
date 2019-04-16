@@ -48,6 +48,8 @@ void script::equState(string sen)
         g=new DTri();
     else if(com2[0]=="JK")
         g=new JKTri();
+    else if(com2[0]=="T")
+        g=new TTri();
     else
         throw string("Unknown gate type");
 
@@ -118,6 +120,10 @@ void script::eval(string sen)
         {
             nodeManager::deleteAll();
             lineMap.clear();
+            line* trueLine=new line("true",(bool)1);
+            lineMap["true"]=trueLine;
+            line* falseLine=new line("false",(bool)0);
+            lineMap["false"]=falseLine;
         }
         else if(sen=="middleVar")
             nodeManager::middleVar();
