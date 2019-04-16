@@ -289,3 +289,39 @@ public:
         return sta;
     }
 };
+
+class TTri : public gate
+{
+private:
+    blist sta;
+
+public:
+    JKTri() : gate("T",1,2)
+    {
+        sta.push_back(0);
+        sta.push_back(1);
+    }
+    void setQ(bool q)
+    {
+        sta[Q]=q;
+        sta[Q2]=!q;
+    }
+    bool getQ() { return sta[Q]; }
+	
+	const uint T=0;
+	
+	const uint Q=0;
+    const uint Q2=1;
+	
+	virtual blist realCalu(blist par)
+    {
+        if(par[CP]==1)
+        {
+            if(par[T]==1)
+            {
+                setQ(!par[Q]);
+            }
+        }
+        return sta;
+    }
+};
