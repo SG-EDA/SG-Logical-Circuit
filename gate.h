@@ -142,7 +142,7 @@ public:
 class xorGate : public gate
 {
 public:
-    xorGate() : gate("Xor",2) {}
+    xorGate() : gate("xor",2) {}
 
     virtual blist realCalu(blist par)
     {
@@ -158,14 +158,15 @@ public:
 class tri : public gate
 {
 protected:
-    blist sta;
+    blist stat;
 
 public:
     tri(string name,uint inputNum, uint outputNum=1) : gate(name,inputNum,outputNum) { isTri=true; }
 
     const uint Q=0;
-    virtual void setQ(bool q) { sta[Q]=q; }
-    virtual bool getQ() { return sta[Q]; }
+    virtual void setQ(bool q) { stat[Q]=q; }
+    virtual bool getQ() { return stat[Q]; }
+    blist getStat() { return stat; }
 };
 
 class RSTri : public tri
@@ -173,13 +174,13 @@ class RSTri : public tri
 public:
     RSTri() : tri("RS",2,2)
     {
-        sta.push_back(0);
-        sta.push_back(1);
+        stat.push_back(0);
+        stat.push_back(1);
     }
     virtual void setQ(bool q)
     {
-        sta[Q]=q;
-        sta[Q2]=!q;
+        stat[Q]=q;
+        stat[Q2]=!q;
     }
 
     const uint R=0;
@@ -199,7 +200,7 @@ public:
         {
             setQ(1);
         }
-        return sta;
+        return stat;
     }
 };
 
@@ -240,7 +241,7 @@ class DTri : public tri
 public:
     DTri() : tri("D",2)
     {
-        sta.push_back(0);
+        stat.push_back(0);
     }
 
     const uint D=0;
@@ -249,8 +250,8 @@ public:
     virtual blist realCalu(blist par)
     {
         if(par[CP]==1)
-            sta[D]=par[D];
-        return sta;
+            stat[D]=par[D];
+        return stat;
     }
 };
 
@@ -259,13 +260,13 @@ class JKTri : public tri
 public:
     JKTri() : tri("JK",3,2)
     {
-        sta.push_back(0);
-        sta.push_back(1);
+        stat.push_back(0);
+        stat.push_back(1);
     }
     virtual void setQ(bool q)
     {
-        sta[Q]=q;
-        sta[Q2]=!q;
+        stat[Q]=q;
+        stat[Q2]=!q;
     }
 
     const uint J=0;
@@ -288,10 +289,10 @@ public:
             }
             else if(par[J]==1&&par[K]==1)
             {
-                setQ(!sta[Q]);
+                setQ(!stat[Q]);
             }
         }
-        return sta;
+        return stat;
     }
 };
 
@@ -300,13 +301,13 @@ class TTri : public tri
 public:
     TTri() : tri("T",2,2)
     {
-        sta.push_back(0);
-        sta.push_back(1);
+        stat.push_back(0);
+        stat.push_back(1);
     }
     virtual void setQ(bool q)
     {
-        sta[Q]=q;
-        sta[Q2]=!q;
+        stat[Q]=q;
+        stat[Q2]=!q;
     }
 	
 	const uint T=0;
@@ -320,9 +321,9 @@ public:
         {
             if(par[T]==1)
             {
-                setQ(!sta[Q]);
+                setQ(!stat[Q]);
             }
         }
-        return sta;
+        return stat;
     }
 };

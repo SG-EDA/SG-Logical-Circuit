@@ -6,9 +6,9 @@ void script::clear()
 {
     nodeManager::deleteAll();
     lineMap.clear();
-    line* trueLine=new line("true",(bool)1);
+    line* trueLine=new line("1",(bool)1);
     lineMap["1"]=trueLine;
-    line* falseLine=new line("false",(bool)0);
+    line* falseLine=new line("0",(bool)0);
     lineMap["0"]=falseLine;
 }
 
