@@ -7,9 +7,9 @@ void script::clear()
     nodeManager::deleteAll();
     lineMap.clear();
     line* trueLine=new line("true",(bool)1);
-    lineMap["true"]=trueLine;
+    lineMap["1"]=trueLine;
     line* falseLine=new line("false",(bool)0);
-    lineMap["false"]=falseLine;
+    lineMap["0"]=falseLine;
 }
 
 void script::runFile(vector<string> com)
@@ -108,35 +108,38 @@ void script::colonExp(string sen)
         throw string("Unexpected line markup");
 }
 
+void script::commandExp(string sen)
+{
+    if(sen=="trueTable")
+        nodeManager::trueTable();
+    else if(sen=="statTable")
+        nodeManager::trueTable(0,true);
+    else if(sen=="gateNum")
+        nodeManager::gateNum();
+    else if(sen=="run")
+        nodeManager::run();
+    else if(sen=="stru")
+        nodeManager::stru();
+    else if(sen=="clear")
+        script::clear();
+    else if(sen=="middleVar")
+        nodeManager::middleVar();
+    else if(sen=="multiplexing")
+        nodeManager::multiplexing();
+    else if(sen=="resetTri")
+        nodeManager::resetTri();
+    else
+        throw string("Unknow command");
+}
+
 void script::eval(string sen)
 {
     if(sen=="")
         return;
-    if(sen.find(":")!=-1)
-    {
+    else if(sen.find(":")!=-1)
         colonExp(sen);
-    }
     else if(sen.find("=")!=-1)
-    {
         equExp(sen);
-    }
     else
-    {
-        if(sen=="trueTable")
-            nodeManager::trueTable();
-        else if(sen=="gateNum")
-            nodeManager::gateNum();
-        else if(sen=="run")
-            nodeManager::run();
-        else if(sen=="stru")
-            nodeManager::stru();
-        else if(sen=="clear")
-            script::clear();
-        else if(sen=="middleVar")
-            nodeManager::middleVar();
-        else if(sen=="multiplexing")
-            nodeManager::multiplexing();
-        else
-            throw string("Unknow command");
-    }
+        commandExp(sen);
 }

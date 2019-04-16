@@ -4,6 +4,7 @@ list<node*> nodeManager::allNode;
 vector<line*> nodeManager::allInput;
 vector<line*> nodeManager::allOutput;
 list<line*> nodeManager::allLine;
+vector<node*> nodeManager::allTri;
 
 line::line(string name, node *n, uint sub) : name(name), n(n), sub(sub)
 {
@@ -15,11 +16,7 @@ bool line::get()
     if(isConst)
         return constVal;
     else
-    {
-        if(!n->isEval)
-            n->eval();
-        return n->result[sub];
-    }
+        return n->eval()[sub];
 }
 
 void line::stru(uint tabNum)
@@ -37,4 +34,6 @@ node::node(gate* g, bool count) : g(g)
 {
     if(count)
         nodeManager::addNode(this);
+    if(g->getIsTri())
+        nodeManager::addTri(this);
 }

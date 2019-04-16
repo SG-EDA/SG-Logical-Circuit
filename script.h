@@ -7,6 +7,7 @@ private:
     static void runFile(vector<string> com);
     static void equExp(string sen);
     static void colonExp(string sen);
+    static void commandExp(string sen);
 
 public:
     static map<string,line*> lineMap; //没有所有权

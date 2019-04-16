@@ -9,9 +9,9 @@ class nodeManager;
 class line
 {
 private:
+    string name;
     node *n;
     uint sub;
-    string name;
     bool isConst=false;
 public:
     bool constVal;
@@ -47,8 +47,11 @@ public:
 
     blist eval()
     {
-        this->result=g->calu(getInputPar());
-        this->isEval=true;
+        if(isEval==false)
+        {
+            this->result=g->calu(getInputPar());
+            this->isEval=true;
+        }
         return this->result;
     }
 
@@ -77,6 +80,30 @@ private:
     static list<line*> allLine;
     static vector<line*> allInput;
     static vector<line*> allOutput;
+    static vector<node*> allTri;
+    static void recuTriTrue(uint sub = 0)
+    {
+        tri* t=(tri*)(allTri[sub]->g);
+        t->setQ(0);
+
+        if(sub==allTri.size()-1)
+            run(true);
+        else
+            recuTriTrue(sub+1);
+
+        t->setQ(1);
+
+        if(sub==allTri.size()-1)
+            run(true);
+        else
+            recuTriTrue(sub+1);
+    }
+
+    static void resetChunk()
+    {
+        for(node* i : allNode)
+            i->isEval=false;
+    }
 
 public:
     static void deleteAll()
@@ -89,12 +116,14 @@ public:
         allLine.clear();
         allInput.clear();
         allOutput.clear();
+        allTri.clear();
     }
 
     static void addNode(node* n) { allNode.push_back(n); }
     static void addLine(line* n) { allLine.push_back(n); }
     static void addInputLine(line* n) { allInput.push_back(n); }
     static void addOutputLine(line* n) { allOutput.push_back(n); }
+    static void addTri(node* n) { allTri.push_back(n); }
 
     static void gateNum()
     {
@@ -106,38 +135,57 @@ public:
             cout<<i.first<<":"<<i.second<<endl;
     }
 
-    static void trueTable(uint sub = 0)
+    static void trueTable(uint sub = 0, bool staRecu=false)
     {
-        allInput[sub]->constVal=false;
+        auto conti=[&]()
+        {
+            if(sub==allInput.size()-1)
+            {
+                if(staRecu)
+                    recuTriTrue();
+                else
+                    run();
+            }
+            else
+                trueTable(sub+1,staRecu);
+        };
 
-        if(sub==allInput.size()-1)
-            run();
-        else
-            trueTable(sub+1);
-
-        allInput[sub]->constVal=true;
-
-        if(sub==allInput.size()-1)
-            run();
-        else
-            trueTable(sub+1);
+        allInput[sub]->constVal=0;
+        conti();
+        allInput[sub]->constVal=1;
+        conti();
     }
 
-    static void run()
+    static void run(bool outputSta=false)
     {
-        reset();
+        resetChunk();
         for(line* i : allInput)
             cout<<"["<<i->getName()<<"]"<<i->get()<<" ";
+
+        if(outputSta)
+        {
+            cout<<" || ";
+            for(uint i=0;i<allTri.size();i++)
+            {
+                tri* t=(tri*)(allTri[i]->g);
+                cout<<"["<<i<<"]"<<t->getQ()<<" ";
+            }
+        }
+
         cout<<" -> ";
         for(uint i=0;i<allOutput.size();i++)
             cout<<"["<<i<<"]"<<allOutput[i]->get()<<" ";
+
         cout<<endl;
     }
 
-    static void reset()
+    static void resetTri()
     {
-        for(node* i : allNode)
-            i->isEval=false;
+        for(node* i : allTri)
+        {
+            tri* t=(tri*)(i->g);
+            t->setQ(0);
+        }
     }
 
     static void stru()

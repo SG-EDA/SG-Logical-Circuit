@@ -23,6 +23,7 @@ public:
     uint getInputNum() { return inputNum; }
     uint getOutputNum() { return outputNum; }
     string getName() { return this->name; }
+    bool getIsTri() { return isTri; }
 
     blist calu(blist par)
     {
@@ -31,6 +32,8 @@ public:
         else
             return realCalu(par);
     }
+
+    virtual ~gate() {}
 };
 
 
@@ -161,7 +164,8 @@ public:
     tri(string name,uint inputNum, uint outputNum=1) : gate(name,inputNum,outputNum) { isTri=true; }
 
     const uint Q=0;
-    bool getQ() { return sta[Q]; }
+    virtual void setQ(bool q) { sta[Q]=q; }
+    virtual bool getQ() { return sta[Q]; }
 };
 
 class RSTri : public tri
@@ -172,7 +176,7 @@ public:
         sta.push_back(0);
         sta.push_back(1);
     }
-    void setQ(bool q)
+    virtual void setQ(bool q)
     {
         sta[Q]=q;
         sta[Q2]=!q;
@@ -199,15 +203,15 @@ public:
     }
 };
 
-class RSCTri : public gate
+class RSCTri : public tri
 {
 private:
     RSTri rstg;
 
 public:
-    RSCTri() : gate("RSC",3,2) { isTri=true; }
-    void setQ(bool q) { rstg.setQ(q); }
-    bool getQ() { return rstg.getQ(); }
+    RSCTri() : tri("RSC",3,2) {}
+    virtual void setQ(bool q) { rstg.setQ(q); }
+    virtual bool getQ() { return rstg.getQ(); }
 
     const uint R=0;
     const uint S=1;
@@ -238,7 +242,6 @@ public:
     {
         sta.push_back(0);
     }
-    void setQ(bool q) { sta[Q]=q; }
 
     const uint D=0;
     const uint CP=1;
@@ -259,7 +262,7 @@ public:
         sta.push_back(0);
         sta.push_back(1);
     }
-    void setQ(bool q)
+    virtual void setQ(bool q)
     {
         sta[Q]=q;
         sta[Q2]=!q;
@@ -285,7 +288,7 @@ public:
             }
             else if(par[J]==1&&par[K]==1)
             {
-                setQ(!par[Q]);
+                setQ(!sta[Q]);
             }
         }
         return sta;
@@ -295,12 +298,12 @@ public:
 class TTri : public tri
 {
 public:
-    TTri() : tri("T",1,2)
+    TTri() : tri("T",2,2)
     {
         sta.push_back(0);
         sta.push_back(1);
     }
-    void setQ(bool q)
+    virtual void setQ(bool q)
     {
         sta[Q]=q;
         sta[Q2]=!q;
@@ -317,7 +320,7 @@ public:
         {
             if(par[T]==1)
             {
-                setQ(!par[Q]);
+                setQ(!sta[Q]);
             }
         }
         return sta;
