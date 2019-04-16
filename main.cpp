@@ -3,6 +3,7 @@
 
 int main()
 {
+    script::eval("clear");
     while(1)
     {
         string input;
