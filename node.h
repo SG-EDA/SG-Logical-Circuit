@@ -197,7 +197,8 @@ public:
     static void middleVar()
     {
         for(line* i : allLine)
-            cout<<"["<<i->getName()<<"]"<<i->get()<<endl;
+            cout<<"["<<i->getName()<<"]"<<i->get()<<"/t";
+        cout<<endl;
     }
 
     static void multiplexing()
