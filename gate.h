@@ -51,6 +51,20 @@ public:
 };
 
 
+class and4Gate : public gate
+{
+public:
+    and4Gate() : gate("and4",4) {}
+
+    virtual blist realCalu(blist par)
+    {
+        blist result;
+        result.push_back(par[0]&&par[1]&&par[2]&&par[3]);
+        return result;
+    }
+};
+
+
 class orGate : public gate
 {
 public:
@@ -60,6 +74,20 @@ public:
     {
         blist result;
         result.push_back(par[0]||par[1]);
+        return result;
+    }
+};
+
+
+class or4Gate : public gate
+{
+public:
+    or4Gate() : gate("or4",4) {}
+
+    virtual blist realCalu(blist par)
+    {
+        blist result;
+        result.push_back(par[0]||par[1]||par[2]||par[3]);
         return result;
     }
 };
@@ -89,6 +117,20 @@ public:
         notGate g2;
         par=g1.calu(par);
         return g2.calu(par);
+    }
+};
+
+
+class NA4Gate : public gate
+{
+public:
+    NA4Gate() : gate("NA4",4) {}
+
+    virtual blist realCalu(blist par)
+    {
+        blist result;
+        result.push_back(!(par[0]&&par[1]&&par[2]&&par[3]));
+        return result;
     }
 };
 

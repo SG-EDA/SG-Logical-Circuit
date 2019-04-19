@@ -38,12 +38,18 @@ void script::equExp(string sen)
     gate *g;
     if(com2[0]=="and")
         g=new andGate();
+    else if(com2[0]=="and4")
+        g=new and4Gate();
     else if(com2[0]=="or")
         g=new orGate();
+    else if(com2[0]=="or4")
+        g=new or4Gate();
     else if(com2[0]=="not")
         g=new notGate();
     else if(com2[0]=="NA")
         g=new NAGate();
+    else if(com2[0]=="NA4")
+        g=new NA4Gate();
     else if(com2[0]=="NO")
         g=new NOGate();
     else if(com2[0]=="NOA")
