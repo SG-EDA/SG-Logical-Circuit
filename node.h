@@ -197,7 +197,7 @@ public:
     static void middleVar()
     {
         for(line* i : allLine)
-            cout<<"["<<i->getName()<<"]"<<i->get()<<"/t";
+            cout<<"["<<i->getName()<<"]"<<i->get()<<"\t";
         cout<<endl;
     }
 
