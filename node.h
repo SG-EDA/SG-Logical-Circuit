@@ -18,6 +18,7 @@ public:
     bool constVal;
 
     line(string name, node *n,uint sub=0);
+    void delayedConstruction(node *n,uint sub=0);
     line(string name,bool constVal=0) : name(name), isConst(true), constVal(constVal) {}
     bool get();
     string getName() { return this->name; }

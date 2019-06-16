@@ -36,6 +36,7 @@ void script::equExp(string sen)
 
     //先根据com2创建门电路
     gate *g;
+    //确认门类型，实例化对象
     if(com2[0]=="and")
         g=new andGate();
     else if(com2[0]=="and4")
@@ -69,13 +70,20 @@ void script::equExp(string sen)
     else
         throw string("Unknown gate type");
 
-    node *n=new node(g);
+    node *n=new node(g); //通过门对象初始化节点
     for(uint i=1;i<com2.size();i++)
     {
-        n->addInputLine(lineMap[com2[i]]);
+        if(lineMap[com2[i]]==0) //目前这个输入线还没有被定义
+        {
+            line* newLine=new line(com2[i],nullptr); //先构造上对象本体，其它的等定义的时候再延迟构造
+            lineMap[com2[i]]=newLine;
+            n->addInputLine(newLine);
+        }
+        else
+            n->addInputLine(lineMap[com2[i]]); //设置节点输入
     }
 
-    //创建导线
+    //创建该节点的输出导线
     vector<string> com3=help::split(com[0],",");
     for(uint i=0;i<com3.size();i++)
     {
@@ -83,8 +91,13 @@ void script::equExp(string sen)
             continue;
         else
         {
-           line* newLine=new line(com3[i],n,i);
-           lineMap[com3[i]]=newLine;
+           if(lineMap[com3[i]]==0) //目前这个输出线还没有被定义
+           {
+               line* newLine=new line(com3[i],n,i); //正常定义
+               lineMap[com3[i]]=newLine;
+           }
+           else
+               lineMap[com3[i]]->delayedConstruction(n,i); //延迟构造
         }
     }
 }

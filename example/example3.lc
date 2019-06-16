@@ -1,0 +1,6 @@
+input:x
+i1=xor y1 x
+y1=JK 1 1 1
+y2=JK i1 i1 1
+output:y2
+output:y1

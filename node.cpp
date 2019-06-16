@@ -11,9 +11,18 @@ line::line(string name, node *n, uint sub) : name(name), n(n), sub(sub)
     nodeManager::addLine(this);
 }
 
+void line::delayedConstruction(node *n, uint sub)
+{
+    this->n=n;
+    this->sub=sub;
+}
+
 bool line::getIsEvaling()
 {
-    return this->n->isEvaling;
+    if(isConst)
+        return false;
+    else
+        return this->n->isEvaling;
 }
 
 bool line::get()
