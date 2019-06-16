@@ -10,16 +10,18 @@ class line
 {
 private:
     string name;
-    node *n;
     uint sub;
     bool isConst=false;
+
 public:
+    node *n;
     bool constVal;
 
     line(string name, node *n,uint sub=0);
     line(string name,bool constVal=0) : name(name), isConst(true), constVal(constVal) {}
     bool get();
     string getName() { return this->name; }
+    bool getIsEvaling();
     void stru(uint tabNum=0);
 };
 
@@ -31,13 +33,28 @@ private:
     {
         blist par;
         for(line* i : inputLine)
-            par.push_back(i->get());
+        {
+            if(i->getIsEvaling()) //检查是否有环形
+            {
+                 gate* iTri=i->n->g;
+                 if(iTri->getIsTri())
+                 {
+                     tri* t=(tri*)iTri;
+                     par.push_back(t->getStat()[tri::Q]);
+                 }
+                 else
+                     throw string("Illegal Ring Circuit");
+            }
+            else
+                par.push_back(i->get());
+        }
         return par;
     }
 
 public:
     vector<line*> inputLine; //与g的input个数相等。每个连接需指明插槽位
-    bool isEval=false;
+    bool isEvaled=false;
+    bool isEvaling=false;
     blist result;
     gate *g;
 
@@ -47,11 +64,13 @@ public:
 
     blist eval()
     {
-        if(isEval==false)
+        isEvaling=true;
+        if(isEvaled==false)
         {
             this->result=g->calu(getInputPar());
-            this->isEval=true;
+            this->isEvaled=true;
         }
+        isEvaling=false;
         return this->result;
     }
 
@@ -102,7 +121,7 @@ private:
     static void resetChunk()
     {
         for(node* i : allNode)
-            i->isEval=false;
+            i->isEvaled=false;
     }
 
 public:

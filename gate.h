@@ -205,7 +205,7 @@ protected:
 public:
     tri(string name,uint inputNum, uint outputNum=1) : gate(name,inputNum,outputNum) { isTri=true; }
 
-    const uint Q=0;
+    const static uint Q=0;
     virtual void setQ(bool q) { stat[Q]=q; }
     virtual bool getQ() { return stat[Q]; }
     blist getStat() { return stat; }

@@ -11,6 +11,11 @@ line::line(string name, node *n, uint sub) : name(name), n(n), sub(sub)
     nodeManager::addLine(this);
 }
 
+bool line::getIsEvaling()
+{
+    return this->n->isEvaling;
+}
+
 bool line::get()
 {
     if(isConst)
