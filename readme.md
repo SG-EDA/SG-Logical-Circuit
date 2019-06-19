@@ -1,6 +1,11 @@
 Logical Circuit
 =============
 
+Catalogue
+-------------
+* [ÖÐÎÄÎÄµµ](readme_cn.md)
+* [Trigger document](tri_readme.md)
+
 Documents
 -------------
 ### Colon Expression
@@ -32,9 +37,12 @@ load:D:/test.lc
 ### Command
 
 * **trueTable:** Running circuit with enumerating all inputs
+* **statTable**  Running circuit with enumerating all inputs and trigger state
+* **multiplexing:** Statistics of all line usage
 * **gateNum:** Output the number of logic gates in the current circuit
 * **stru:** Output of the current circuit structure (does not look good)
 * **run:** Running Circuit with Current Input
 * **clear:** Clear the current circuit
 * **middleVar:** Running circuit and output all line values with Current Input
 * **multiplexing:** Statistics of all line usage
+* **resetTri** Reset all triggers with initial state of 0
