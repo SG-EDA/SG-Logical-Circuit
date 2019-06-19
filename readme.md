@@ -1,9 +1,9 @@
-Logical Circuit
+ï»¿Logical Circuit
 =============
 
 Catalogue
 -------------
-* [ÖÐÎÄÎÄµµ](readme_cn.md)
+* [ä¸­æ–‡æ–‡æ¡£](readme_cn.md)
 * [Trigger document](tri_readme.md)
 
 Documents

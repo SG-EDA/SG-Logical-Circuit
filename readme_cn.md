@@ -11,7 +11,8 @@ Logical Circuit
 ### 冒号表达式
 
 #### input
-设置电路的输入线路（自动定义线路变量）```
+设置电路的输入线路（自动定义线路变量）
+```
 input:A
 ```
 
@@ -41,5 +42,5 @@ load:D:/test.lc
 * **run:** 用当前设置的输入运行电路
 * **clear:** 清除当前电路
 * **middleVar:** 运行电路，输出所有导线中流过的值
-* **multiplexing:** Statistics of all line usage
+* **multiplexing:** 统计所有导线使用次数
 * **resetTri** 重置所有触发器的初始状态为0
