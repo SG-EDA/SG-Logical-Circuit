@@ -1,5 +1,7 @@
 ﻿Logical Circuit
 =============
+Logical Circuit is a circuit simulation tool. You can use the built-in scripting language to quickly build your own circuit and set the input to run it. You can view the internal state of each latch, evaluate the process, or exhaust all the inputs to get the circuit truth table and state transition truth table.
+
 
 Catalogue
 -------------
