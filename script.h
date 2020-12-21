@@ -4,16 +4,19 @@
 class script
 {
 private:
-    static void runFile(vector<string> com);
-    static void equExp(string sen);
-    static void colonExp(string sen);
-    static void commandExp(string sen);
+    void runFile(vector<string> com);
+    void equExp(string sen);
+    void colonExp(string sen);
+    void commandExp(string sen);
+    nodeManager* manager;
 
 public:
-    static map<string,line*> lineMap; //没有所有权
-    static void clear();
-    static void eval(string sen);
-    static void evalAll(string code)
+    map<string,line*> lineMap; //没有所有权
+    script() { this->manager=new nodeManager; }
+
+    void clear();
+    void eval(string sen);
+    void evalAll(string code)
     {
         auto com=help::split(code,"\n");
         for(auto i : com)

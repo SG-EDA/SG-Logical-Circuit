@@ -1,20 +1,21 @@
 #include "script.h"
 
-map<string,line*> script::lineMap;
-
 void script::clear()
 {
-    nodeManager::deleteAll();
+    delete this->manager;
     lineMap.clear();
-    line* trueLine=new line("1",(bool)1);
+    this->manager=new nodeManager;
+    line* trueLine=new line("1",true);
+    manager->addLine(trueLine);
     lineMap["1"]=trueLine;
-    line* falseLine=new line("0",(bool)0);
+    line* falseLine=new line("0",false);
     lineMap["0"]=falseLine;
+    manager->addLine(falseLine);
 }
 
 void script::runFile(vector<string> com)
 {
-    nodeManager::deleteAll();
+    this->clear();
     string path;
     if(com.size()==3)
        path=com[1]+":"+com[2];
@@ -71,12 +72,14 @@ void script::equExp(string sen)
         throw string("Unknown gate type");
 
     node *n=new node(g); //通过门对象初始化节点
+    manager->addNode(n);
     for(uint i=1;i<com2.size();i++)
     {
         if(lineMap[com2[i]]==0) //目前这个输入线还没有被定义
         {
             line* newLine=new line(com2[i],nullptr); //先构造上对象本体，其它的等定义的时候再延迟构造
             lineMap[com2[i]]=newLine;
+            manager->addLine(newLine);
             n->addInputLine(newLine);
         }
         else
@@ -95,6 +98,7 @@ void script::equExp(string sen)
            {
                line* newLine=new line(com3[i],n,i); //正常定义
                lineMap[com3[i]]=newLine;
+               manager->addLine(newLine);
            }
            else
                lineMap[com3[i]]->delayedConstruction(n,i); //延迟构造
@@ -110,10 +114,11 @@ void script::colonExp(string sen)
     {
         line* newline=new line(com[1]);
         lineMap[com[1]]=newline;
-        nodeManager::addInputLine(newline);
+        manager->addLine(newline);
+        manager->addInputLine(newline);
     }
     else if(com[0]=="output")
-        nodeManager::addOutputLine(lineMap[com[1]]);
+        manager->addOutputLine(lineMap[com[1]]);
     else if(com[0]=="set")
     {
         vector<string> com2=help::split(com[1]," ");
@@ -130,23 +135,23 @@ void script::colonExp(string sen)
 void script::commandExp(string sen)
 {
     if(sen=="trueTable")
-        nodeManager::trueTable();
+        manager->trueTable();
     else if(sen=="statTable")
-        nodeManager::trueTable(0,true);
+        manager->trueTable(0,true);
     else if(sen=="gateNum")
-        nodeManager::gateNum();
+        manager->gateNum();
     else if(sen=="run")
-        nodeManager::run();
+        manager->run();
     else if(sen=="stru")
-        nodeManager::stru();
+        manager->stru();
     else if(sen=="clear")
-        script::clear();
+        this->clear();
     else if(sen=="middleVar")
-        nodeManager::middleVar();
+        manager->middleVar();
     else if(sen=="multiplexing")
-        nodeManager::multiplexing();
+        manager->multiplexing();
     else if(sen=="resetTri")
-        nodeManager::resetTri();
+        manager->resetTri();
     else
         throw string("Unknow command");
 }

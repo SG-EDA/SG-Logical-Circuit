@@ -4,7 +4,6 @@
 #include <map>
 
 class node;
-class nodeManager;
 
 class line
 {
@@ -17,7 +16,7 @@ public:
     node *n;
     bool constVal;
 
-    line(string name, node *n,uint sub=0);
+    line(string name, node *n,uint sub=0) : name(name), n(n), sub(sub) {}
     void delayedConstruction(node *n,uint sub=0);
     line(string name,bool constVal=0) : name(name), isConst(true), constVal(constVal) {}
     bool get();
@@ -59,7 +58,7 @@ public:
     blist result;
     gate *g;
 
-    node(gate* g,bool count=true);
+    node(gate* g) : g(g) {}
     ~node() { delete g; }
     void addInputLine(line* l) { inputLine.push_back(l); }
 
@@ -96,12 +95,12 @@ public:
 class nodeManager
 {
 private:
-    static list<node*> allNode;
-    static list<line*> allLine;
-    static vector<line*> allInput;
-    static vector<line*> allOutput;
-    static vector<node*> allTri;
-    static void recuTriTrue(uint sub = 0)
+    list<node*> allNode;
+    list<line*> allLine;
+    vector<line*> allInput;
+    vector<line*> allOutput;
+    vector<node*> allTri;
+    void recuTriTrue(uint sub = 0)
     {
         tri* t=(tri*)(allTri[sub]->g);
         t->setQ(0);
@@ -119,14 +118,16 @@ private:
             recuTriTrue(sub+1);
     }
 
-    static void resetChunk()
+    void resetChunk()
     {
         for(node* i : allNode)
             i->isEvaled=false;
     }
 
+    void addTri(node* n) { allTri.push_back(n); }
+
 public:
-    static void deleteAll()
+    ~nodeManager()
     {
         for(line* i : allLine)
             delete i;
@@ -139,13 +140,17 @@ public:
         allTri.clear();
     }
 
-    static void addNode(node* n) { allNode.push_back(n); }
-    static void addLine(line* n) { allLine.push_back(n); }
-    static void addInputLine(line* n) { allInput.push_back(n); }
-    static void addOutputLine(line* n) { allOutput.push_back(n); }
-    static void addTri(node* n) { allTri.push_back(n); }
+    void addNode(node* n)
+    {
+        allNode.push_back(n);
+        if(n->g->getIsTri())
+            this->addTri(n);
+    }
+    void addLine(line* n) { allLine.push_back(n); }
+    void addInputLine(line* n) { allInput.push_back(n); }
+    void addOutputLine(line* n) { allOutput.push_back(n); }
 
-    static void gateNum()
+    void gateNum()
     {
         cout<<"Gate:"<<allNode.size()<<endl;
         map<string,int> num;
@@ -155,7 +160,7 @@ public:
             cout<<i.first<<":"<<i.second<<endl;
     }
 
-    static void trueTable(uint sub = 0, bool staRecu=false)
+    void trueTable(uint sub = 0, bool staRecu=false)
     {
         auto conti=[&]()
         {
@@ -176,7 +181,7 @@ public:
         conti();
     }
 
-    static void run(bool outputSta=false)
+    void run(bool outputSta=false)
     {
         resetChunk();
         for(line* i : allInput)
@@ -199,7 +204,7 @@ public:
         cout<<endl;
     }
 
-    static void resetTri()
+    void resetTri()
     {
         for(node* i : allTri)
         {
@@ -208,20 +213,20 @@ public:
         }
     }
 
-    static void stru()
+    void stru()
     {
         for(line* i : allOutput)
             i->stru();
     }
 
-    static void middleVar()
+    void middleVar()
     {
         for(line* i : allLine)
             cout<<"["<<i->getName()<<"]"<<i->get()<<"\t";
         cout<<endl;
     }
 
-    static void multiplexing()
+    void multiplexing()
     {
         uint lineNum=0;
         map<string,int>result;

@@ -3,7 +3,7 @@
 
 int main()
 {
-    script::clear();
+    script s;
     while(1)
     {
         string input;
@@ -11,7 +11,7 @@ int main()
         getline(cin,input);
         try
         {
-            script::eval(input);
+            s.eval(input);
         }
         catch(string e)
         {
