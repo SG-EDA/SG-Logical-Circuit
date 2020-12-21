@@ -11,6 +11,7 @@ HEADERS += \
     QString.h \
     gate.h \
     help.h \
+    layout.h \
     lefParser.h \
     lefStru.h \
     node.h \
