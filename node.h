@@ -150,14 +150,16 @@ public:
     void addInputLine(line* n) { allInput.push_back(n); }
     void addOutputLine(line* n) { allOutput.push_back(n); }
 
-    void gateNum()
+    string gateNum()
     {
-        cout<<"Gate:"<<allNode.size()<<endl;
+        string result;
+        result+="Gate:"+to_string(allNode.size())+"\n";
         map<string,int> num;
         for(node* i : allNode)
             num[i->g->getName()]+=1;
         for(auto i : num)
-            cout<<i.first<<":"<<i.second<<endl;
+            result+=i.first+":"+to_string(i.second)+"\n";
+        return result;
     }
 
     void trueTable(uint sub = 0, bool staRecu=false)
@@ -181,27 +183,30 @@ public:
         conti();
     }
 
-    void run(bool outputSta=false)
+    string run(bool outputSta=false)
     {
+        string result;
+
         resetChunk();
         for(line* i : allInput)
-            cout<<"["<<i->getName()<<"]"<<i->get()<<" ";
+            result+="["+i->getName()+"]"+to_string(i->get())+" ";
 
         if(outputSta)
         {
-            cout<<" || ";
+            result+=" || ";
             for(uint i=0;i<allTri.size();i++)
             {
                 tri* t=(tri*)(allTri[i]->g);
-                cout<<"["<<i<<"]"<<t->getQ()<<" ";
+                result+="["+to_string(i)+"]"+to_string(t->getQ())<+" ";
             }
         }
 
-        cout<<" -> ";
+        result+=" -> ";
         for(uint i=0;i<allOutput.size();i++)
-            cout<<"["<<i<<"]"<<allOutput[i]->get()<<" ";
+            result+="["+to_string(i)+"]"+to_string(allOutput[i]->get())+" ";
 
-        cout<<endl;
+        result+="\n";
+        return result;
     }
 
     void resetTri()
@@ -226,8 +231,10 @@ public:
         cout<<endl;
     }
 
-    void multiplexing()
+    string multiplexing()
     {
+        string strResult;
+
         uint lineNum=0;
         map<string,int>result;
         for(node* i : allNode)
@@ -237,10 +244,12 @@ public:
         }
         for(auto i : result)
         {
-            cout<<"["<<i.first<<"]"<<i.second<<"\t"; 
+            strResult+="["+i.first+"]"+to_string(i.second)+"\t";
             lineNum+=i.second;
         }
-        cout<<endl<<"lineNum:"<<lineNum<<endl;
+        strResult+="\nlineNum:"+to_string(lineNum)+"\n";
+
+        return strResult;
     }
 };
 

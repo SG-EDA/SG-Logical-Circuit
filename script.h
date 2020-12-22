@@ -13,6 +13,11 @@ private:
 public:
     map<string,line*> lineMap; //没有所有权
     script() { this->manager=new nodeManager; }
+    ~script()
+    {
+        delete this->manager;
+        lineMap.clear();
+    }
 
     void clear();
     void eval(string sen);
