@@ -231,20 +231,37 @@ public:
         cout<<endl;
     }
 
+    map<line*,int> getLineMultiplexing()
+    {
+        map<line*,int> result;
+        for(node* i : allNode)
+        {
+            for(line* j : i->inputLine)
+                result[j]++;
+        }
+        return result;
+    }
+
+    map<node*,int> getNodeMultiplexing()
+    {
+        map<node*,int> result;
+        for(line* i : allLine) //allLine记录的是输出
+            result[i->n]++; //看看它是从哪个元件连出来的，给那个元件加
+
+        for(node* i : allNode)
+            result[i]+=i->inputLine.size(); //inputLine记录的是输入，有几个输入加几
+
+        return result;
+    }
+
     string multiplexing()
     {
         string strResult;
 
         uint lineNum=0;
-        map<string,int>result;
-        for(node* i : allNode)
+        for(auto i : this->getLineMultiplexing())
         {
-            for(line* j : i->inputLine)
-                result[j->getName()]++;
-        }
-        for(auto i : result)
-        {
-            strResult+="["+i.first+"]"+to_string(i.second)+"\t";
+            strResult+="["+i.first->getName()+"]"+to_string(i.second)+"\t";
             lineNum+=i.second;
         }
         strResult+="\nlineNum:"+to_string(lineNum)+"\n";
