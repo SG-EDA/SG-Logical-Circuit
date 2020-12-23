@@ -18,6 +18,7 @@ public:
         delete this->manager;
         lineMap.clear();
     }
+    nodeManager* getManager() { return this->manager; }
 
     void clear();
     void eval(string sen);
