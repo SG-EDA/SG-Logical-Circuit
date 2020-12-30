@@ -9,6 +9,7 @@ SOURCES += main.cpp \
 
 HEADERS += \
     QString.h \
+    excep.h \
     gate.h \
     help.h \
     layout.h \

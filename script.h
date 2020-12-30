@@ -9,6 +9,7 @@ private:
     void equExp(string sen);
     void colonExp(string sen);
     void commandExp(string sen);
+    void set(string name,string val);
     nodeManager* manager;
 
 public:
