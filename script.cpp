@@ -13,6 +13,15 @@ void script::clear()
     manager->addLine(falseLine);
 }
 
+void script::runFile(string path)
+{
+    string code=help::readTxt(path);
+    cout<<code<<endl;
+    cout<<"----- load:"<<path<<" -----"<<endl<<endl;
+    script::evalAll(code);
+    cout<<endl<<"-----end-----"<<endl;
+}
+
 void script::runFile(vector<string> com)
 {
     this->clear();
@@ -22,13 +31,8 @@ void script::runFile(vector<string> com)
     else
         path=com[1];
 
-    string code=help::readTxt(path);
-    cout<<code<<endl;
-    cout<<"----- load:"<<path<<" -----"<<endl<<endl;
-    script::evalAll(code);
-    cout<<endl<<"-----end-----"<<endl;
+    runFile(path);
 }
-
 
 void script::equExp(string sen)
 {

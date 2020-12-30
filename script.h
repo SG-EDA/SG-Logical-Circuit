@@ -4,6 +4,7 @@
 class script
 {
 private:
+    void runFile(string path);
     void runFile(vector<string> com);
     void equExp(string sen);
     void colonExp(string sen);
